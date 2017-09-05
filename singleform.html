@@ -1,0 +1,179 @@
+<html>
+<head>
+<title>One Page Submit</title>
+</head>
+
+<body>
+
+<div id="IDX-FormResponse" class="IDX-formResponse"></div>
+<div id="IDX-FormActions" class="IDX-form-actions">
+</div>
+
+<hr>
+<!----------------------------- IDX Form Above ------------------------------------------------------>
+<!--------------------------------------------------------------------------------------------------->
+<!--------------------------------------------------------------------------------------------------->
+<div id="search_block">
+	<div class="search_display">
+
+
+<!---- Search Information -->	
+<div id="form_sec">
+
+
+<form action="/testing/singleformresponse.php" method="post" id="IDX-signupForm" class="IDX-form IDX-modalForm" data-type="signup" data-ajax="false">
+
+	<!-- First section start here -->
+	<div class="first_sec">
+    	<strong>STEP 1: LOCATION</strong><br>
+		<p>Select the cities in which you are interested.</p>
+        
+		<select name="pt" id="propTypeSelect">
+        	<option value="7" selected="selected">Single Family Residential</option>
+			<option value="3">Lots and Land</option>
+        </select>
+		
+        <select name="cities[]" multiple class="mul_sel">
+
+						<optgroup label="Napa County"> 
+							<option value="1068">American Canyon</option> 
+							<option value="1257">Angwin</option> 
+							<option value="6792">Calistoga</option> 
+							<option value="31966">Napa</option>		
+							<option value="34018">Oakville</option> 
+							<option value="40627">Rutherford</option> 
+							<option value="40878">Saint Helena</option> 
+							<option value="53007">Yountville</option> 
+						</optgroup>
+
+						<optgroup label="Sonoma County"> 
+							<option value="4797">Bodega Bay</option> 
+							<option value="9342">Cloverdale</option> 
+							<option value="10444">Cotati</option> 
+							<option value="16436">Forestville</option>	
+							<option value="17814">Geyserville</option> 
+							<option value="18067">Glen Ellen</option> 
+							<option value="18872">Graton</option> 
+							<option value="19435">Guerneville</option> 
+							<option value="20643">Healdsburg</option> 
+							<option value="23276">Jenner</option> 
+							<option value="24046">Kenwood</option> 
+							<option value="30892">Monte Rio</option>	
+							<option value="34067">Occidental</option> 
+							<option value="36089">Penngrove</option> 
+							<option value="36278">Petaluma</option> 
+							<option value="40010">Rohnert Park</option> 
+							<option value="41492">Santa Rosa</option> 
+							<option value="41985">Sebastopol</option> 
+							<option value="43501">Sonoma</option>
+							<option value="46168">The Sea Ranch</option> 
+							<option value="53136">Timber Cove</option>	
+							<option value="52168">Windsor</option> 
+						</optgroup>
+						
+						
+		  </select>
+          
+<p>Select multiple cities by holding down theCTRL key (PC) or SHIFT key (MAC) and clicking on each city.</p>
+    </div>
+	
+	
+	<!-- First section end here -->
+	<!-- Second section start here -->
+    <div class="first_sec">
+   		<strong>STEP 2: PRICE &amp; FEATURES</strong><br>
+		<p>Narrow your search results by defining a min/max price range and necessary features.</p>
+        <label class="low">Low Price:</label>
+        <label class="high">High Price:</label>
+        <input type="text" class="low_inpt" name="lp" id="lowPrice" size="1" value="0">
+        <input type="text" class="high_inpt" name="hp" id="highPrice" size="1" value="99,000,000">
+        <label>Bedrooms</label>
+        <select name="bd" id="bedRooms">
+        	<option>Any Number</option>
+			<option value="0">Studio</option>
+			<option value="1">1+</option>
+			<option value="2">2+</option>
+			<option value="3">3+</option>
+			<option value="4">4+</option>
+			<option value="5">5+</option>
+			<option value="6">6+</option>
+			<option value="7">7+</option>
+			<option value="8">8+</option>
+			<option value="9">9+</option>
+			<option value="10">10+</option>
+        </select>
+        <label>Bathrooms</label>
+        <select name="ba" id="bathRooms" >
+			<option value="0" selected="selected">Any Number</option>
+			<option value="1">1+</option>
+			<option value="2">2+</option>
+			<option value="3">3+</option>
+			<option value="4">4+</option>
+			<option value="5">5+</option>
+			<option value="6">6+</option>
+			<option value="7">7+</option>
+			<option value="8">8+</option>
+			<option value="9">9+</option>
+			<option value="10">10+</option>
+		</select>
+        
+        <label class="low" id="IDX-searchSqFtLabel">Min sq ft:</label>
+        <label class="high" id="IDX-searchDateAddedLabel">Lot Acres:</label>
+        <input type="text" class="low_inpt" name="sqFt" id="sqFt"  value="">
+        <input type="text" class="high_inpt" name="acres" value="" id="acres" >
+
+		<div class="IDX-searchBox" id="IDX-searchSortByPrice">
+
+			<div class="IDX-searchLabel" id="IDX-searchSortByPriceLabel">Sort by</div>
+
+			<div class="IDX-searchInput" id="IDX-searchSortByPriceInput">
+
+				<select name="srt" id="sortByPrice">
+
+
+
+					<option value="ASC">Least Expensive To Most</option>
+
+					<option value="DESC" selected="selected">Most Expensive To Least</option>
+
+		
+
+				</select>
+
+			</div>
+
+		</div>
+    </div>
+	<!-- Second section end here -->
+	<!-- Third section start here -->
+   
+	
+	<div class="second_sec">
+    	<strong>STEP 3: E-MAIL</strong><br>
+		<p>Enter your email address so the system can send you new listings.</p>
+        <label>First Name:</label>
+        <input name="firstName" id="IDX-firstName" value="" class="IDX-input" data-mini="true" maxlength="60" autocomplete="off" type="text">
+        <label>Last Name:</label>
+        <input name="lastName" id="IDX-lastName" value="" class="IDX-input" data-mini="true" maxlength="60" type="text">
+        <label>Email:</label>
+        <input name="email" id="IDX-email" value="" class="IDX-input" data-fieldrequired="y" data-mini="true" maxlength="255" type="text">
+        <label>Phone No:</label>
+        <input name="phone" id="IDX-phone" value="" class="IDX-input" data-mini="true" maxlength="20" type="text">
+        <label>Password:</label>
+        <input name="password" id="IDX-password" value="" class="IDX-input" data-mini="true" autocomplete="off" type="password">
+    </div>
+	<!-- Third section end here -->
+    
+    
+   
+<button id="IDX-submitBtn" class="IDX-btn IDX-btn-primary" type="submit" data-theme="b">Search</button>
+</form>
+</div>
+
+
+
+
+
+
+</body>
+</html>
