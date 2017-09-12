@@ -8,9 +8,9 @@
 
 //Variables
 //-------------------------------------------------------------
-$apiKey = ""; //Client API Key
-$idxID = ""; //MLS ID
-$idxUrl = "";
+$apiKey = "IrTr-Nt3YBkA8GG3vorSuC"; //Client API Key
+$idxID = "d025"; //MLS ID
+$idxUrl = "http://trappa.idxbroker.com";
 
 //API Call Function
 //-------------------------------------------------------------
@@ -100,8 +100,11 @@ if (is_null($leadId)){
 $cities = $_POST['cities'];
 
 //Add the Saved Search
+$stripLp = str_replace(",", "",$_POST['lp']);
+$stripHp = str_replace(",", "",$_POST['hp']);
+
 //-----------------------------------------------------------------------------------
-$searchArray = array('idxID' => $idxID,'lp' => $_POST['lp'], 'hp' => $_POST['hp'],'bd' => $_POST['bd'],'tb' => $_POST['ba'],'sqft' => $_POST['sqFt'],'acres' => $_POST['acres'],'city' => $cities);
+$searchArray = array('idxID' => $idxID,'lp' => $stripLp, 'hp' => $stripHp,'bd' => $_POST['bd'],'tb' => $_POST['ba'],'sqft' => $_POST['sqFt'],'acres' => $_POST['acres'],'city' => $cities);
 
 $data = array(
  'searchName' => 'My Saved Search',
@@ -118,8 +121,10 @@ apiCall($apiKey,'PUT',$endPoint,$data);
 
 //Create City list for Redirect URL
 //-----------------------------------------------------------------------------------
+if (isset($_POST['cities'])){
 $myCities = implode("&city[]=",$cities);
-$searchCities = '&city[]='.$myCities;
+$searchCities = "&city[]=".$myCities;
+}
 
 //Redirect to IDX Search
 //-----------------------------------------------------------------------------------
@@ -127,9 +132,9 @@ $redirectUrl = $idxUrl."/idx/results/listings?idxID=".$idxID."&lp=".$_POST['lp']
 
 echo "<center>Performing Search . . .";
 
-echo "<script>";
-echo "window.location.href= '".$redirectUrl."';";
-echo "</script>";
+//echo "<script>";
+//echo "window.location.href= '".$redirectUrl."';";
+//echo "</script>";
 
 ?>
 
