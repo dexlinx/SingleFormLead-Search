@@ -6,11 +6,34 @@
 
 <?php
 
+
 //Variables
 //-------------------------------------------------------------
-$apiKey = "IrTr-Nt3YBkA8GG3vorSuC"; //Client API Key
-$idxID = "d025"; //MLS ID
-$idxUrl = "http://trappa.idxbroker.com";
+$apiKey = ""; //Client API Key
+$idxID = ""; //MLS ID
+$idxUrl = ""; //Example: http://yoursub.idxbroker.com
+
+
+//Sanitize the POST variable
+//-------------------------------------------------------------
+function purica_array ($data = array()) {
+	if (!is_array($data) || !count($data)) {
+		return array();
+	}
+	foreach ($data as $k => $v) {
+		if (!is_array($v) && !is_object($v)) {
+			$data[$k] = htmlspecialchars(trim($v));
+		}
+		if (is_array($v)) {
+			$data[$k] = purica_array($v);
+		}
+	}
+	return $data;
+}
+
+$sanPost = purica_array($_POST);
+
+
 
 //API Call Function
 //-------------------------------------------------------------
@@ -56,7 +79,7 @@ $currentLeads = apiCall($apiKey,'GET','leads/lead',$data);
 //-------------------------------------------------------------
 foreach($currentLeads as $key => $value){
 
-if ($_POST[email] == $value["email"]){
+if ($sanPost[email] == $value["email"]){
 	$match = 'yes';
 }
 }
@@ -66,11 +89,11 @@ if ($_POST[email] == $value["email"]){
 if ($match != 'yes'){
 	
     $data = array(
-      'firstName' => $_POST["firstName"],
-      'lastName' => $_POST["lastName"],
-      'email' => $_POST["email"],
-	  'phone' => $_POST["phone"],
-	  'password' => $_POST["password"]
+      'firstName' => $sanPost["firstName"],
+      'lastName' => $sanPost["lastName"],
+      'email' => $sanPost["email"],
+	  'phone' => $sanPost["phone"],
+	  'password' => $sanPost["password"]
     );	
 	
     $data = http_build_query($data); // encode and & delineate
@@ -87,7 +110,7 @@ $updatedLeads = apiCall($apiKey,'GET','leads/lead',$data);
 
 foreach($updatedLeads as $key => $value){
 
-if ($_POST[email] == $value["email"]){
+if ($sanPost[email] == $value["email"]){
 	$leadId = $value["id"];
 }
 }
@@ -97,14 +120,14 @@ if (is_null($leadId)){
 
 //Getting the List of Cities
 //-----------------------------------------------------------------------------------
-$cities = $_POST['cities'];
+$cities = $sanPost['cities'];
 
 //Add the Saved Search
-$stripLp = str_replace(",", "",$_POST['lp']);
-$stripHp = str_replace(",", "",$_POST['hp']);
+$stripLp = str_replace(",", "",$sanPost['lp']);
+$stripHp = str_replace(",", "",$sanPost['hp']);
 
 //-----------------------------------------------------------------------------------
-$searchArray = array('idxID' => $idxID,'lp' => $stripLp, 'hp' => $stripHp,'bd' => $_POST['bd'],'tb' => $_POST['ba'],'sqft' => $_POST['sqFt'],'acres' => $_POST['acres'],'city' => $cities);
+$searchArray = array('idxID' => $idxID,'lp' => $stripLp, 'hp' => $stripHp,'bd' => $sanPost['bd'],'tb' => $sanPost['ba'],'sqft' => $sanPost['sqFt'],'acres' => $sanPost['acres'],'city' => $cities);
 
 $data = array(
  'searchName' => 'My Saved Search',
@@ -121,20 +144,20 @@ apiCall($apiKey,'PUT',$endPoint,$data);
 
 //Create City list for Redirect URL
 //-----------------------------------------------------------------------------------
-if (isset($_POST['cities'])){
+if (isset($sanPost['cities'])){
 $myCities = implode("&city[]=",$cities);
 $searchCities = "&city[]=".$myCities;
 }
 
 //Redirect to IDX Search
 //-----------------------------------------------------------------------------------
-$redirectUrl = $idxUrl."/idx/results/listings?idxID=".$idxID."&lp=".$_POST['lp']."&hp=".$_POST['hp']."&bd=".$_POST['bd']."&tb=".$_POST['ba']."&sqft=".$_POST['sqFt']."&acres=".$_POST['acres'].$searchCities;
+$redirectUrl = $idxUrl."/idx/results/listings?idxID=".$idxID."&lp=".$sanPost['lp']."&hp=".$sanPost['hp']."&bd=".$sanPost['bd']."&tb=".$sanPost['ba']."&sqft=".$sanPost['sqFt']."&acres=".$sanPost['acres'].$searchCities;
 
 echo "<center>Performing Search . . .";
 
-//echo "<script>";
-//echo "window.location.href= '".$redirectUrl."';";
-//echo "</script>";
+echo "<script>";
+echo "window.location.href= '".$redirectUrl."';";
+echo "</script>";
 
 ?>
 
