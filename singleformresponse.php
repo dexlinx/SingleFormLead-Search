@@ -10,8 +10,8 @@
 //Variables
 //-------------------------------------------------------------
 $apiKey = ""; //Client API Key
-$idxID = ""; //MLS ID
-$idxUrl = ""; //Example: http://yoursub.idxbroker.com
+$idxID = "b092"; //MLS ID
+$idxUrl = ""; //IDX Url
 
 
 //Sanitize the POST variable
@@ -45,7 +45,7 @@ curl_setopt_array($curl, array(
   CURLOPT_RETURNTRANSFER => true,
   CURLOPT_ENCODING => "",
   CURLOPT_MAXREDIRS => 10,
-  CURLOPT_TIMEOUT => 30,
+  CURLOPT_TIMEOUT => 60,
   CURLOPT_POSTFIELDS => $data,
   CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
   CURLOPT_CUSTOMREQUEST => $callType,
@@ -71,23 +71,9 @@ return $decode;
 }
 }
 
-//Get List of Leads
+//Lead Creation
 //-------------------------------------------------------------
-$currentLeads = apiCall($apiKey,'GET','leads/lead',$data);
 
-//Does Posted Lead Exist?
-//-------------------------------------------------------------
-foreach($currentLeads as $key => $value){
-
-if ($sanPost[email] == $value["email"]){
-	$match = 'yes';
-}
-}
-
-//If No Match - Insert the Lead
-//-----------------------------------------------------------------------------------
-if ($match != 'yes'){
-	
     $data = array(
       'firstName' => $sanPost["firstName"],
       'lastName' => $sanPost["lastName"],
@@ -98,25 +84,39 @@ if ($match != 'yes'){
 	
     $data = http_build_query($data); // encode and & delineate
 
-//Create Lead
-apiCall($apiKey,'PUT','leads/lead',$data);
+
+$createLead = apiCall($apiKey,'PUT','leads/lead',$data);
+
+if ($createLead != 'Lead already exists.'){ //Lead Doesn't Exist - We create it
+
+	$leadId = $createLead[newID]; //Save the Returned Lead ID
+
+}else{ //Lead Exists, Now we have to find its ID
+	
+	
+//Get chunks of 500 and Locate Lead ID
+//-------------------------------------------------------------
+$offset = 0;
+
+do{
+	
+	$currentLeads = apiCall($apiKey,'GET','leads/lead?rf[]=email&rf[]=id&offset='.$offset.'&limit=500',$data);
+	$offset+=500;
+
+if($currentLeads != NULL){
+	foreach($currentLeads as $key => $value){ //Loop Through This Set of Leads
+		if ($sanPost[email] == $value["email"]){
+		$match = 'yes';
+		$leadId = $value["id"]; //Keep the Existing Lead ID for later
+		//echo $leadId;
+		//echo $match;
+		}
+	}
 }
 
-
-//Get The Existing or New Lead ID
-//-----------------------------------------------------------------------------------
-$updatedLeads = apiCall($apiKey,'GET','leads/lead',$data);
-
-
-foreach($updatedLeads as $key => $value){
-
-if ($sanPost[email] == $value["email"]){
-	$leadId = $value["id"];
+}while($match != 'yes' && $currentLeads != NULL);
 }
-}
-if (is_null($leadId)){
-	Echo "No lead found";
-}
+
 
 //Getting the List of Cities
 //-----------------------------------------------------------------------------------
