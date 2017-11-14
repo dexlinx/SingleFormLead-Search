@@ -9,9 +9,9 @@
 
 //Variables
 //-------------------------------------------------------------
-$apiKey = "2wEjn7BA2xFtVeR_VGINZp"; //Client API Key
-$idxID = "b092"; //MLS ID
-$idxUrl = "http://www.naparealestate.idxbroker.com";
+$apiKey = ""; //Client API Key
+$idxID = ""; //MLS ID
+$idxUrl = "";
 
 
 //Sanitize the POST variable
